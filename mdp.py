@@ -114,52 +114,52 @@ class mdp:
 
     # --------- Simple MC / MDP simulation ---------
 
-    def simulate_mc(self, init_state, horizon=10):
-        """
-        MC simulation: assumes action=None transitions
-        Returns a list of states visited
-        """
-        path = [init_state]
-        current = init_state
+    # def simulate_mc(self, init_state, horizon=10):
+    #     """
+    #     MC simulation: assumes action=None transitions
+    #     Returns a list of states visited
+    #     """
+    #     path = [init_state]
+    #     current = init_state
 
-        for _ in range(horizon):
-            key = (current, None)
-            if key not in self.transitions:
-                break
-            targets, probs = zip(*self.transitions[key])
-            next_state = random.choices(targets, weights=probs, k=1)[0]
-            path.append(next_state)
-            current = next_state
+    #     for _ in range(horizon):
+    #         key = (current, None)
+    #         if key not in self.transitions:
+    #             break
+    #         targets, probs = zip(*self.transitions[key])
+    #         next_state = random.choices(targets, weights=probs, k=1)[0]
+    #         path.append(next_state)
+    #         current = next_state
 
-        return path
+    #     return path
 
-    def simulate_mdp(self, init_state, policy=None, horizon=10):
-        """
-        MDP simulation with optional policy(state) -> action
-        If policy=None, choose a random available action
-        """
-        current = init_state
-        path = [init_state]
+    # def simulate_mdp(self, init_state, policy=None, horizon=10):
+    #     """
+    #     MDP simulation with optional policy(state) -> action
+    #     If policy=None, choose a random available action
+    #     """
+    #     current = init_state
+    #     path = [init_state]
 
-        for _ in range(horizon):
-            available = [(s, a) for (s, a) in self.transitions.keys()
-                         if s == current and a is not None]
-            if not available:
-                break
+    #     for _ in range(horizon):
+    #         available = [(s, a) for (s, a) in self.transitions.keys()
+    #                      if s == current and a is not None]
+    #         if not available:
+    #             break
 
-            if policy is None:
-                _, action = random.choice(available)
-            else:
-                action = policy(current)
+    #         if policy is None:
+    #             _, action = random.choice(available)
+    #         else:
+    #             action = policy(current)
 
-            key = (current, action)
-            targets, probs = zip(*self.transitions[key])
-            next_state = random.choices(targets, weights=probs, k=1)[0]
+    #         key = (current, action)
+    #         targets, probs = zip(*self.transitions[key])
+    #         next_state = random.choices(targets, weights=probs, k=1)[0]
 
-            path.append((action, next_state))
-            current = next_state
+    #         path.append((action, next_state))
+    #         current = next_state
 
-        return path
+    #     return path
 
     # --------- General simulation (Scheme C + automatic absorbing states) ---------
 
